@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+
+  db:
+    restart: always
+    image: postgres:14.3-alpine
+    container_name: dev-db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  django:
+    container_name: dev-django
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      -db
+    volumes:
+      - ./backend
+
+  react:
+    container_name: dev-react
+    build: ./frontend
+    command: npm start
+    ports:
+      - 3000:3000
+    stdin_open: true
+    depends_on:
+      - django
+    # volumes:
+    #   - ./frontend:/./frontend
+    #   - ./frontend/node_modules
