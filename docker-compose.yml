@@ -7,11 +7,12 @@ services:
     image: postgres:14.3-alpine
     container_name: dev-db
     ports:
-      - 5432:5432
+      - 5434:5434
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - PGPORT=5434
     volumes:
       - postgres-db:/var/lib/postgresql/data
 
