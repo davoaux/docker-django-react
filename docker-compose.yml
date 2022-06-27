@@ -35,13 +35,11 @@ services:
     container_name: dev-react
     build: ./frontend
     command: npm run dev
-    # command: npm run status
     ports:
       - 3000:3000
     volumes:
       - ./frontend:/frontend
-    # depends_on:
-    #   - django
+      - /frontend/node_modules
 
 volumes:
   postgres-db:
